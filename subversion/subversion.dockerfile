@@ -32,8 +32,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     mkdir -p ${REPO_HOME} && \
     chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} ${REPO_HOME} && \
     touch /etc/subversion/.passwd && \
-    touch /etc/subversion/.authz && \
-    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} /etc/subversion/.passwd /etc/subversion/.authz && \
+    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} /etc/subversion/.passwd && \
     sed -i "s/APACHE_RUN_USER=www-data/APACHE_RUN_USER=${SUBVERSION_USER}/" /etc/apache2/envvars && \
     sed -i "s/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=${SUBVERSION_GROUP}/" /etc/apache2/envvars && \
     echo "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
@@ -45,7 +44,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     echo "    AuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthUserFile /etc/subversion/.passwd" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo "    AuthzSVNAccessFile /etc/subversion/.authz" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthzSVNReposRelativeAccessFile authz" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    Satisfy any" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    Require valid-user" >> /etc/apache2/sites-available/001-subversion.conf && \
