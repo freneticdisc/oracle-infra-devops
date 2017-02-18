@@ -24,7 +24,7 @@ MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
 ENV APACHE_HOME=/u01/app/apache SUBVERSION_HOME=/u01/app/apache/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
 
-CMD /etc/init.d/apache2 start
+CMD /etc/init.d/apache2 start && /bin/bash
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install apache2 libapache2-svn subversion subversion-tools -y && \
