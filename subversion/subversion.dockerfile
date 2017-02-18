@@ -22,16 +22,17 @@
 FROM ubuntu
 MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
-ENV SUBVERSION_HOME=/etc/subversion REPO_HOME=/u01/app/apache/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
+ENV REPO_HOME=/u01/app/apache/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
 
 CMD /etc/init.d/apache2 start && /bin/bash
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install apache2 libapache2-svn subversion subversion-tools -y && \
     groupadd -g 1000 ${SUBVERSION_GROUP} && useradd -u 1000 -g 1000 -m ${SUBVERSION_USER} && \
-    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} ${SUBVERSION_HOME} ${REPO_HOME} && \
-    su - -c "touch ${SUBVERSION_HOME}/.passwd" ${SUBVERSION_USER} && \
-    su - -c "touch ${SUBVERSION_HOME}/.authz" ${SUBVERSION_USER} && \
+    mkdir -p ${REPO_HOME} && \
+    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} /etc/subversion ${REPO_HOME} && \
+    su - -c "touch /etc/subversion/.passwd" ${SUBVERSION_USER} && \
+    su - -c "touch /etc/subversion/.authz" ${SUBVERSION_USER} && \
     sed -i "s/APACHE_RUN_USER=www-data/APACHE_RUN_USER=${SUBVERSION_USER}/" /etc/apache2/envvars && \
     sed -i "s/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=${SUBVERSION_GROUP}/" /etc/apache2/envvars && \
     echo "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
@@ -40,9 +41,9 @@ RUN apt-get update -y && apt-get upgrade -y && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthType Basic" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo "    AuthUserFile ${SUBVERSION_HOME}/.passwd" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthUserFile /etc/subversion/.passwd" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo "    AuthzSVNAccessFile ${SUBVERSION_HOME}/.authz" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthzSVNAccessFile /etc/subversion/.authz" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    Satisfy any" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    Require valid-user" >> /etc/apache2/sites-available/001-subversion.conf && \
