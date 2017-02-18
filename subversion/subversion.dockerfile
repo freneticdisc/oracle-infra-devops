@@ -22,9 +22,9 @@
 FROM ubuntu
 MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
-ENV SUBVERSION_HOME=/etc/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
+ENV SUBVERSION_HOME=/etc/subversion REPO_HOME=/u01/app/apache/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
 
-CMD "/etc/init.d/apache2 start && /bin/bash"
+CMD /etc/init.d/apache2 start && /bin/bash
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install apache2 libapache2-svn subversion subversion-tools -y && \
@@ -37,7 +37,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     sed -i "s/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=${SUBVERSION_GROUP}/" /etc/apache2/envvars && \
     echo "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
     echo "    DAV svn" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo "    SVNParentPath ${SUBVERSION_HOME}" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    SVNParentPath ${REPO_HOME}" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthType Basic" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
