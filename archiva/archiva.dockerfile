@@ -24,7 +24,7 @@ MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
 ENV SCRATCH=/tmp/scratch ARCHIVA_URL=http://www.gtlib.gatech.edu/pub/apache/archiva/2.2.1/binaries/apache-archiva-2.2.1-bin.tar.gz APACHE_HOME=/u01/app/apache ARCHIVA_HOME=/u01/app/apache/archiva ARCHIVA_GROUP=apache ARCHIVA_USER=archiva
 
-CMD /bin/su - -c "${ARCHIVA_HOME}/bin/archiva start" ${ARCHIVA_USER}
+CMD /bin/su - -c "${ARCHIVA_HOME}/bin/archiva start" ${ARCHIVA_USER} && /bin/bash
 
 RUN apt-get update -y && \
     apt-get install software-properties-common python-software-properties -y && \
