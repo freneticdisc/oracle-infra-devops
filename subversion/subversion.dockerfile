@@ -39,6 +39,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     echo "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
     echo "    DAV svn" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    SVNParentPath ${REPO_HOME}" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    SVNListParentPath on" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthType Basic" >> /etc/apache2/sites-available/001-subversion.conf && \
     echo "    AuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
