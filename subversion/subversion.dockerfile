@@ -24,13 +24,13 @@ MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
 ENV SUBVERSION_HOME=/etc/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
 
-CMD /etc/init.d/apache2 start && /bin/bash
+CMD "/etc/init.d/apache2 start && /bin/bash"
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install apache2 libapache2-svn subversion subversion-tools -y && \
     groupadd -g 1000 ${SUBVERSION_GROUP} && useradd -u 1000 -g 1000 -m ${SUBVERSION_USER} && \
     mkdir -p ${SUBVERSION_HOME} && \
-    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} ${APACHE_HOME} && \
+    chown -R ${SUBVERSION_USER}:${SUBVERSION_GROUP} ${SUBVERSION_HOME} && \
     su - -c "touch ${SUBVERSION_HOME}/.passwd" ${SUBVERSION_USER} && \
     su - -c "touch ${SUBVERSION_HOME}/.authz" ${SUBVERSION_USER} && \
     sed -i "s/APACHE_RUN_USER=www-data/APACHE_RUN_USER=${SUBVERSION_USER}/" /etc/apache2/envvars && \
