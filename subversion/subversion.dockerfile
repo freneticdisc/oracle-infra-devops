@@ -35,18 +35,18 @@ RUN apt-get update -y && apt-get upgrade -y && \
     su - -c "touch ${SUBVERSION_HOME}/.authz" ${SUBVERSION_USER} && \
     sed -i "s/APACHE_RUN_USER=www-data/APACHE_RUN_USER=${SUBVERSION_USER}/" /etc/apache2/envvars && \
     sed -i "s/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=${SUBVERSION_GROUP}/" /etc/apache2/envvars && \
-    echo -e "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tDAV svn" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tSVNParentPath ${SUBVERSION_HOME}" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tAuthType Basic" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tAuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tAuthUserFile ${SUBVERSION_HOME}/.passwd" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tAuthzSVNAccessFile ${SUBVERSION_HOME}/.authz" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tSatisfy any" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "\tRequire valid-user" >> /etc/apache2/sites-available/001-subversion.conf && \
-    echo -e "</Location>" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "<Location /subversion>" > /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    DAV svn" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    SVNParentPath ${SUBVERSION_HOME}" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthType Basic" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthName \"Subversion Authorization Realm\"" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthUserFile ${SUBVERSION_HOME}/.passwd" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    AuthzSVNAccessFile ${SUBVERSION_HOME}/.authz" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    Satisfy any" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "    Require valid-user" >> /etc/apache2/sites-available/001-subversion.conf && \
+    echo "</Location>" >> /etc/apache2/sites-available/001-subversion.conf && \
     ln -s /etc/apache2/sites-available/001-subversion.conf /etc/apache2/sites-enabled/001-subversion.conf && \
     /etc/init.d/apache2 stop
