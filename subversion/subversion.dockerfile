@@ -22,7 +22,7 @@
 FROM ubuntu
 MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
-ENV APACHE_HOME=/u01/app/apache SUBVERSION_HOME=/u01/app/apache/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
+ENV SUBVERSION_HOME=/etc/subversion SUBVERSION_GROUP=apache SUBVERSION_USER=subversion
 
 CMD /etc/init.d/apache2 start && /bin/bash
 
